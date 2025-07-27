@@ -18,6 +18,12 @@ import java.util.List;
 public class MyUserDetailsService implements UserDetailsService {
     private final CustomerRepository customerRepository;
 
+    /*
+    This is our custom implementation of UserDetailsService so the spring used it to load userInfo as per we say
+    here we load the user from our Db
+    in filter chain whichever filter uses the UserDetailsService to get user details
+    and compare can decide the authentication status of use
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Customer customer = customerRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User details not found for the user: " + username));
