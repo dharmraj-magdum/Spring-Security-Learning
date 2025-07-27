@@ -31,12 +31,14 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String pwd = authentication.getCredentials().toString();
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        if (passwordEncoder.matches(pwd, userDetails.getPassword())) {
-            // Fetch Age details and perform validation to check if age >18
-            return new UsernamePasswordAuthenticationToken(username,pwd,userDetails.getAuthorities());
-        }else {
-            throw new BadCredentialsException("Invalid password!");
-        }
+        //just for fun we won't do anything, just authenticate the user
+        return new UsernamePasswordAuthenticationToken(username,pwd,userDetails.getAuthorities());
+//        if (passwordEncoder.matches(pwd, userDetails.getPassword())) {
+//            // Fetch Age details and perform validation to check if age >18
+//            return new UsernamePasswordAuthenticationToken(username,pwd,userDetails.getAuthorities());
+//        }else {
+//            throw new BadCredentialsException("Invalid password!");
+//        }
     }
 
     @Override
