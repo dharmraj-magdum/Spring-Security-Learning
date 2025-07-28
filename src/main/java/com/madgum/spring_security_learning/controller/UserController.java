@@ -7,6 +7,8 @@ import com.madgum.spring_security_learning.model.CustomerInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.hibernate5.SpringSessionContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,10 +44,10 @@ public class UserController {
     }
 
     @GetMapping("/get-user-info")
-    public ResponseEntity<String> registerUser(@RequestBody CustomerInput customerInput) {
+    public ResponseEntity<Object> registerUser() {
         try {
-
-            Customer customer = customerRepository.findById(customerInput.getId()).get();
+            String email = SecurityContextHolder.getContext().getAuthentication().getName();
+            Customer customer = customerRepository.findByEmail(email).get();
 
             CustomerInfo customerInfo = new CustomerInfo();
             if(customer.getId()>0) {
@@ -53,8 +55,8 @@ public class UserController {
                 customerInfo.setRole(customer.getRole());
                 customerInfo.setEmail(customer.getEmail());
                 customerInfo.setContact("something");
-                return ResponseEntity.status(HttpStatus.CREATED).
-                        body("Given user details are successfully registered");
+                return ResponseEntity.status(HttpStatus.OK).
+                        body(customerInfo);
             } else {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).
                         body("User search failed");

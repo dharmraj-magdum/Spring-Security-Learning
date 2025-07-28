@@ -19,7 +19,7 @@ public class ProjectSecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrfConfig -> csrfConfig.disable()).
                 authorizeHttpRequests((requests) ->
-                        requests.requestMatchers("/myBalance").authenticated()
+                        requests.requestMatchers("/myBalance","/get-user-info").authenticated()
                                 .requestMatchers( "/error", "/register", "/hello").permitAll());
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
