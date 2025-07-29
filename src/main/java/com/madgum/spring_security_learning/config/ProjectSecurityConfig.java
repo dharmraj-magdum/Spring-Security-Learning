@@ -1,14 +1,18 @@
 package com.madgum.spring_security_learning.config;
 
+import com.madgum.spring_security_learning.config.filter.MyJWTTokenGeneratorFilter;
+import com.madgum.spring_security_learning.config.filter.MyJWTTokenValidatorFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -17,10 +21,16 @@ public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        //make our app statleess as each req with JWT considered stateless and validated even when we pass cookies
+        http.sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         http.csrf(csrfConfig -> csrfConfig.disable()).
                 authorizeHttpRequests((requests) ->
-                        requests.requestMatchers("/myBalance","/get-user-info").authenticated()
+                        requests.requestMatchers("/user","/myBalance","/get-user-info").authenticated()
                                 .requestMatchers( "/error", "/register", "/hello").permitAll());
+        //out custom filter to add and validate JWT
+        http.addFilterAfter(new MyJWTTokenGeneratorFilter(), BasicAuthenticationFilter.class);
+        http.addFilterBefore(new MyJWTTokenValidatorFilter(), BasicAuthenticationFilter.class);
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
         return http.build();
