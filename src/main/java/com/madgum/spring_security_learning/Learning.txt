@@ -1,0 +1,7 @@
+
+//Session management
+by default spring security have a session management by cookie
+cookies - JSESSIONID , we can configure it if we want
+after first successful login attempt, spring security add cookie to response
+with JSESSIONID eg value "FDB8FF97D71E39CE6F08E3283EE2F8E4"
+subsequent req wont need to send the credentials if we send this cookie with req
