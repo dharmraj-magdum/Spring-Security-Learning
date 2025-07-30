@@ -12,6 +12,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,6 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 public class MyJWTTokenValidatorFilter extends OncePerRequestFilter {
     /**
@@ -46,7 +48,8 @@ public class MyJWTTokenValidatorFilter extends OncePerRequestFilter {
                         String username = String.valueOf(claims.get("username"));
                         String authorities = String.valueOf(claims.get("authorities"));
                         //as we got valid token, we direclty create new authentication object with authenticated true with details in token
-                        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
+                        List<GrantedAuthority> userAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
+                        Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, userAuthorities);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }

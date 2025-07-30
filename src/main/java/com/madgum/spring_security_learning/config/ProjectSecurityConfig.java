@@ -27,6 +27,7 @@ public class ProjectSecurityConfig {
         http.csrf(csrfConfig -> csrfConfig.disable()).
                 authorizeHttpRequests((requests) ->
                         requests.requestMatchers("/user","/myBalance","/get-user-info").authenticated()
+                                .requestMatchers("/confidential/*").hasAnyAuthority("read","admin")
                                 .requestMatchers( "/error", "/register", "/hello").permitAll());
         //out custom filter to add and validate JWT
         http.addFilterAfter(new MyJWTTokenGeneratorFilter(), BasicAuthenticationFilter.class);
