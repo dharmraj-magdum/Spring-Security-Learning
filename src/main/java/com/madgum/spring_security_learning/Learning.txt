@@ -5,3 +5,36 @@ cookies - JSESSIONID , we can configure it if we want
 after first successful login attempt, spring security add cookie to response
 with JSESSIONID eg value "FDB8FF97D71E39CE6F08E3283EE2F8E4"
 subsequent req wont need to send the credentials if we send this cookie with req
+
+
+//OAUTH2 using spring security & social logins
+first we need to create/make a client account in social identity providers like facebook and gitHub
+that Client have Id and secret using that we can connect to those provides via Client
+that Client holds info regarding access our site needed, what and how etc.
+in project config files, we just have to mention the bean of ClientRegistrationRepository
+meaning we're instructing the oauth lib to consider these client/social login available in our appln
+use then for login and etc, the spring security will take care of everything
+/*@Bean
+    ClientRegistrationRepository clientRegistrationRepository() {
+        ClientRegistration github = githubClientRegistration();
+        ClientRegistration facebook = facebookClientRegistration();
+        return new InMemoryClientRegistrationRepository(github, facebook);
+    }
+
+    private ClientRegistration githubClientRegistration() {
+        return CommonOAuth2Provider.GITHUB.getBuilder("github").clientId("Ov23liCBLLUjii41pS7k")
+                .clientSecret("9da8734b56aad52d91b268fe6834a8df12447d95").build();
+    }
+
+    private ClientRegistration facebookClientRegistration() {
+        return CommonOAuth2Provider.FACEBOOK.getBuilder("facebook").clientId("974042741122392")
+                .clientSecret("36d48c25c1767d58b3101551513d7e1e").build();
+    }*/
+
+//IMP - This cannot be completely implemented in normal REST apis as we dont owe the data in these social logins
+ so we cannot change or modify user details, hence cannot authorize according to roles and etc
+
+
+
+
+
