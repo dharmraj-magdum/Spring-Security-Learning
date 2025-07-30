@@ -34,6 +34,21 @@ use then for login and etc, the spring security will take care of everything
 //IMP - This cannot be completely implemented in normal REST apis as we dont owe the data in these social logins
  so we cannot change or modify user details, hence cannot authorize according to roles and etc
 
+//Authorization Server
+KeyClock is open source Authorization Server,
+we can run the server how we want and crate Clients with Grant type which ever we want
+For user Authentication our spring app relies solely on the Jwt given to us.
+we validate the token and extract the user details from it that's it.
+all other things like user registration, roles etc are taken care by the auth server.
+First the user need to get toke from server, passing the Client id and secret , then will receive token as per the Grant type
+
+
+
+
+
+
+
+
 
 
 
