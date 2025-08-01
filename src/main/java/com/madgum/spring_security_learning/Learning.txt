@@ -42,6 +42,14 @@ we validate the token and extract the user details from it that's it.
 all other things like user registration, roles etc are taken care by the auth server.
 First the user need to get toke from server, passing the Client id and secret , then will receive token as per the Grant type
 
+changes for using diff Auth server like our own server
+Not major changes are required as both the servers works in OAuth2
+1)change the jwk-uri in properties as it used by JWT lib to decode the JWT
+2)Check if the claims provided by the token, if there is change in claim need to change TokenValidatorFilter OR the Authority/RoleConverter bean
+as it will add logic to authenticate and add authorities
+
+
+/////----------------------------------
 
 
 
